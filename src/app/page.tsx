@@ -7,9 +7,10 @@ import { ProductGrid } from "@/components/home/ProductGrid";
 import { ProductSkeleton } from "@/components/home/ProductSkeleton";
 import { MOCK_CATEGORIES, MOCK_PRODUCTS, Product } from "@/lib/data";
 import { useCartStore } from "@/store/cartStore";
+import { useSearchStore } from "@/store/searchStore";
 
 export default function Home() {
-  const [searchTerm, setSearchTerm] = useState("");
+  const { searchTerm } = useSearchStore();
   const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const addItem = useCartStore((state) => state.addItem);
@@ -38,7 +39,9 @@ export default function Home() {
 
   return (
     <div className="container mx-auto px-4 py-6">
-      <SearchBar onSearch={setSearchTerm} />
+      <div className="md:hidden">
+        <SearchBar className="mb-6" />
+      </div>
       <CategorySlider 
         categories={MOCK_CATEGORIES} 
         activeCategoryId={activeCategoryId} 

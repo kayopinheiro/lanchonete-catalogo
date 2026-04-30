@@ -1,29 +1,26 @@
 "use client";
 
 import { Search, X } from "lucide-react";
-import { useState } from "react";
+import { useSearchStore } from "@/store/searchStore";
 
 interface SearchBarProps {
-  onSearch: (term: string) => void;
+  className?: string;
 }
 
-export function SearchBar({ onSearch }: SearchBarProps) {
-  const [searchTerm, setSearchTerm] = useState("");
+export function SearchBar({ className = "mb-6" }: SearchBarProps) {
+  const { searchTerm, setSearchTerm } = useSearchStore();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearchTerm(value);
-    onSearch(value);
+    setSearchTerm(e.target.value);
   };
 
   const handleClear = () => {
     setSearchTerm("");
-    onSearch("");
   };
 
   return (
-    <div className="relative w-full max-w-md mx-auto mb-6">
-      <div className="relative flex items-center w-full h-12 rounded-2xl focus-within:shadow-lg bg-white overflow-hidden border border-border transition-shadow">
+    <div className={`relative w-full max-w-md mx-auto ${className}`}>
+      <div className="relative flex items-center w-full h-12 rounded-2xl focus-within:shadow-lg bg-muted overflow-hidden border border-border transition-shadow">
         <div className="grid place-items-center h-full w-12 text-muted-foreground">
           <Search className="h-5 w-5" />
         </div>
