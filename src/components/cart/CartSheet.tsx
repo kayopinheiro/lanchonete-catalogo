@@ -135,7 +135,7 @@ export function CartSheet() {
       </SheetContent>
 
       <Dialog open={showOrderTypeDialog} onOpenChange={setShowOrderTypeDialog}>
-        <DialogContent className="w-[90vw] max-w-md rounded-2xl">
+        <DialogContent className="w-[90vw] max-w-md rounded-2xl p-6 sm:p-8">
           <DialogHeader>
             <DialogTitle>Como você prefere o seu pedido?</DialogTitle>
             <DialogDescription>
