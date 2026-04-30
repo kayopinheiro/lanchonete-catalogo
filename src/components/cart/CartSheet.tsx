@@ -127,7 +127,12 @@ export function CartSheet() {
               <span className="text-muted-foreground">Total</span>
               <span className="text-lg font-bold">R$ {totalValue.toFixed(2).replace(".", ",")}</span>
             </div>
-            <Button onClick={() => setShowOrderTypeDialog(true)} className="w-full rounded-2xl h-12 text-base font-bold">
+            <Button 
+              onClick={() => setShowOrderTypeDialog(true)} 
+              disabled={showOrderTypeDialog}
+              className="w-full rounded-2xl h-12 text-base font-bold transition-opacity"
+              style={{ opacity: showOrderTypeDialog ? 0.3 : 1 }}
+            >
               Finalizar Pedido no WhatsApp
             </Button>
           </div>
@@ -135,24 +140,25 @@ export function CartSheet() {
       </SheetContent>
 
       <Dialog open={showOrderTypeDialog} onOpenChange={setShowOrderTypeDialog}>
-        <DialogContent className="w-[90vw] max-w-md rounded-2xl p-6 sm:p-8">
-          <DialogHeader>
-            <DialogTitle>Como você prefere o seu pedido?</DialogTitle>
-            <DialogDescription>
+        <DialogContent className="fixed top-auto bottom-0 left-0 right-0 translate-x-0 translate-y-0 w-full max-w-full rounded-t-[32px] rounded-b-none p-6 pb-safe sm:top-1/2 sm:bottom-auto sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-[90vw] sm:max-w-md sm:rounded-2xl sm:p-8 z-[110] border-0 shadow-2xl">
+          <div className="mx-auto w-12 h-1.5 rounded-full bg-muted-foreground/20 mb-6 sm:hidden" />
+          <DialogHeader className="sm:text-center text-left">
+            <DialogTitle className="text-xl">Como você prefere o seu pedido?</DialogTitle>
+            <DialogDescription className="text-base mt-1">
               Escolha uma das opções abaixo para finalizar.
             </DialogDescription>
           </DialogHeader>
-          <div className="flex flex-col gap-3 mt-4">
+          <div className="flex flex-col gap-3 mt-6 mb-4">
             <Button 
               onClick={() => handleCheckout("Comer no local")}
-              className="h-14 text-base rounded-xl"
+              className="h-14 text-base rounded-2xl w-full"
               variant="default"
             >
               Comer no local
             </Button>
             <Button 
               onClick={() => handleCheckout("Retirar")}
-              className="h-14 text-base rounded-xl"
+              className="h-14 text-base rounded-2xl w-full"
               variant="outline"
             >
               Vou retirar
