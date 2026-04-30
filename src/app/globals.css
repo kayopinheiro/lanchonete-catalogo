@@ -128,3 +128,14 @@
     @apply font-sans;
   }
 }
+
+/* PhoneInput Custom Styles */
+.PhoneInputInput {
+  @apply bg-transparent outline-none border-none w-full h-full;
+}
+.PhoneInput {
+  @apply flex items-center gap-2;
+}
+.PhoneInputCountry {
+  @apply mr-2;
+}
