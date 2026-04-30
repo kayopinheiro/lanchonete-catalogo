@@ -1,6 +1,14 @@
 "use client";
 
 import { useCartStore } from "@/store/cartStore";
+import { useUserStore } from "@/store/userStore";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   Sheet,
   SheetContent,
@@ -17,8 +25,10 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 
 export function CartSheet() {
   const { items, isOpen, setIsOpen, updateQuantity, removeItem, getTotalItems } = useCartStore();
+  const { name, phone } = useUserStore();
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const [mounted, setMounted] = useState(false);
+  const [showOrderTypeDialog, setShowOrderTypeDialog] = useState(false);
 
   useEffect(() => setMounted(true), []);
 
@@ -26,8 +36,11 @@ export function CartSheet() {
 
   const totalValue = items.reduce((total, item) => total + item.product.price * item.quantity, 0);
 
-  const handleCheckout = () => {
+  const handleCheckout = (orderType: "Comer no local" | "Retirar") => {
     let text = `*🍔 NOVO PEDIDO*\n\n`;
+    text += `*Cliente:* ${name}\n`;
+    text += `*WhatsApp:* https://wa.me/${phone.replace(/\D/g, "")}\n`;
+    text += `*Tipo de Pedido:* ${orderType}\n\n`;
     
     items.forEach((item) => {
       text += `• ${item.quantity}x ${item.product.name} - R$ ${(item.product.price * item.quantity).toFixed(2).replace(".", ",")}\n`;
@@ -43,6 +56,7 @@ export function CartSheet() {
     // Limpa o carrinho e fecha a gaveta
     useCartStore.getState().clearCart();
     setIsOpen(false);
+    setShowOrderTypeDialog(false);
   };
 
   return (
@@ -113,12 +127,39 @@ export function CartSheet() {
               <span className="text-muted-foreground">Total</span>
               <span className="text-lg font-bold">R$ {totalValue.toFixed(2).replace(".", ",")}</span>
             </div>
-            <Button onClick={handleCheckout} className="w-full rounded-2xl h-12 text-base font-bold">
+            <Button onClick={() => setShowOrderTypeDialog(true)} className="w-full rounded-2xl h-12 text-base font-bold">
               Finalizar Pedido no WhatsApp
             </Button>
           </div>
         )}
       </SheetContent>
+
+      <Dialog open={showOrderTypeDialog} onOpenChange={setShowOrderTypeDialog}>
+        <DialogContent className="w-[90vw] max-w-md rounded-2xl">
+          <DialogHeader>
+            <DialogTitle>Como você prefere o seu pedido?</DialogTitle>
+            <DialogDescription>
+              Escolha uma das opções abaixo para finalizar.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col gap-3 mt-4">
+            <Button 
+              onClick={() => handleCheckout("Comer no local")}
+              className="h-14 text-base rounded-xl"
+              variant="default"
+            >
+              Comer no local
+            </Button>
+            <Button 
+              onClick={() => handleCheckout("Retirar")}
+              className="h-14 text-base rounded-xl"
+              variant="outline"
+            >
+              Vou retirar
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </Sheet>
   );
 }

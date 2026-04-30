@@ -48,11 +48,18 @@ export default function Home() {
         onSelectCategory={setActiveCategoryId} 
       />
       <div className="mt-8">
-        <h2 className="text-xl font-bold mb-4 text-foreground">
-          {activeCategoryId 
-            ? MOCK_CATEGORIES.find(c => c.id === activeCategoryId)?.name 
-            : "Todos os Produtos"}
-        </h2>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-bold text-foreground">
+            {activeCategoryId 
+              ? MOCK_CATEGORIES.find(c => c.id === activeCategoryId)?.name 
+              : "Catálogo Completo"}
+          </h2>
+          {!activeCategoryId && (
+            <span className="text-sm bg-muted text-muted-foreground px-3 py-1 rounded-full font-medium">
+              {filteredProducts.length} produtos
+            </span>
+          )}
+        </div>
         
         {isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
@@ -61,7 +68,36 @@ export default function Home() {
             ))}
           </div>
         ) : (
-          <ProductGrid products={filteredProducts} onAddProduct={handleAddProduct} />
+          <>
+            {activeCategoryId ? (
+              <ProductGrid products={filteredProducts} onAddProduct={handleAddProduct} />
+            ) : (
+              <div className="space-y-10">
+                {MOCK_CATEGORIES.map(category => {
+                  const categoryProducts = filteredProducts.filter(p => p.categoryId === category.id);
+                  
+                  if (categoryProducts.length === 0) return null;
+
+                  return (
+                    <div key={category.id}>
+                      <h3 className="text-lg font-bold mb-4 flex items-center gap-2 text-foreground">
+                        {category.name}
+                        <span className="text-sm font-normal text-muted-foreground">
+                          ({categoryProducts.length})
+                        </span>
+                      </h3>
+                      <ProductGrid products={categoryProducts} onAddProduct={handleAddProduct} />
+                    </div>
+                  );
+                })}
+                {filteredProducts.length === 0 && (
+                  <div className="text-center py-10 text-muted-foreground">
+                    Nenhum produto encontrado.
+                  </div>
+                )}
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>
