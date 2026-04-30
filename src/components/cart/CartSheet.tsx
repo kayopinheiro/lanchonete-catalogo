@@ -140,9 +140,8 @@ export function CartSheet() {
       </SheetContent>
 
       <Dialog open={showOrderTypeDialog} onOpenChange={setShowOrderTypeDialog}>
-        <DialogContent className="fixed top-auto bottom-0 left-0 right-0 translate-x-0 translate-y-0 w-full max-w-full rounded-t-[32px] rounded-b-none p-6 pb-safe sm:top-1/2 sm:bottom-auto sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-[90vw] sm:max-w-md sm:rounded-2xl sm:p-8 z-[110] border-0 shadow-2xl">
-          <div className="mx-auto w-12 h-1.5 rounded-full bg-muted-foreground/20 mb-6 sm:hidden" />
-          <DialogHeader className="sm:text-center text-left">
+        <DialogContent className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-md rounded-2xl p-6 sm:p-8 z-[110] border-0 shadow-2xl">
+          <DialogHeader className="text-center">
             <DialogTitle className="text-xl">Como você prefere o seu pedido?</DialogTitle>
             <DialogDescription className="text-base mt-1">
               Escolha uma das opções abaixo para finalizar.
